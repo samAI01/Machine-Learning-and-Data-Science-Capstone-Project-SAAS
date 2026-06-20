@@ -5,17 +5,14 @@ import numpy as np
 
 # Page Configuration
 st.set_page_config(
-    page_title="SaaS Profit Predictor",
-    page_icon="💰",
+    page_title="SaaS Profit Prediction & Optimization Platform",
+    page_icon="💼",
     layout="wide"
 )
 
-# Application Title and Intro
-st.title("📊 SaaS Sales Profit Prediction Dashboard")
-st.markdown("""
-This interactive web dashboard leverages your trained **DecisionTreeRegressor with RFE** machine learning pipeline 
-to project transaction profits based on localized geographical, client, product, and financial attributes.
-""")
+# Professional Enterprise Header
+st.title("AI-Powered SaaS Profit Prediction & Optimization Platform")
+st.caption("Predictive Analytics & Marginal Return Forecasting Engine for Enterprise Sales Execution")
 st.markdown("---")
 
 # Cached model loading function
@@ -24,18 +21,18 @@ def load_ml_pipeline():
     try:
         return joblib.load("saas_pipeline.pkl")
     except FileNotFoundError:
-        st.error("⚠️ **Model File Error:** `saas_pipeline.pkl` was not found in the root directory. Please place the file in the same folder as this script.")
+        st.error("**Model File Error:** The predictive pipeline file `saas_pipeline.pkl` was not found in the root directory. Please place the serialized pipeline in the same folder as this application script.")
         return None
 
 pipeline = load_ml_pipeline()
 
 if pipeline:
-    # Grid breakdown layout for inputs
-    st.subheader("🛠️ Transaction Feature Variables")
+    # Input parameter matrix layout
+    st.subheader("Transaction Parameters")
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.markdown("### 🌍 Geography & Client")
+        st.markdown("### Geography & Client")
         country = st.selectbox("Country", ["Ireland", "United States", "Germany", "United Kingdom", "France", "Canada"])
         city = st.selectbox("City", ["Dublin", "New York City", "Stuttgart", "Milwaukee", "Hamburg", "Dallas", "London", "Paris"])
         region = st.selectbox("Region", ["EMEA", "AMER", "APAC"])
@@ -43,7 +40,7 @@ if pipeline:
         customer = st.selectbox("Customer", ["Chevron", "Phillips 66", "Royal Dutch Shell", "Johnson & Johnson", "American Express", "Comcast", "Walmart", "Apple"])
 
     with col2:
-        st.markdown("### 💼 Segmentation & Product")
+        st.markdown("### Segmentation & Product")
         industry = st.selectbox("Industry", ["Energy", "Healthcare", "Finance", "Communications", "Technology", "Retail"])
         segment = st.selectbox("Segment", ["SMB", "Strategic", "Enterprise", "B2B", "B2C"])
         product = st.selectbox("Product", [
@@ -53,17 +50,17 @@ if pipeline:
         ])
         
     with col3:
-        st.markdown("### 📈 Financials & Date Strategy")
-        sales = st.number_input("Sales Revenue ($)", min_value=0.0, value=261.96, step=10.0, format="%.4f")
-        quantity = st.number_input("Quantity Sold", min_value=1, value=2, step=1)
-        discount = st.slider("Discount Applied", min_value=0.0, max_value=1.0, value=0.0, step=0.01)
+        st.markdown("### Financials & Temporal Logic")
+        sales = st.number_input("Gross Revenue ($)", min_value=0.0, value=261.96, step=10.0, format="%.4f")
+        quantity = st.number_input("Units / Volume", min_value=1, value=2, step=1)
+        discount = st.slider("Contractual Discount Applied", min_value=0.0, max_value=1.0, value=0.0, step=0.01)
         
         # Chronological splits 
-        year = st.number_input("Year", min_value=2020, max_value=2035, value=2022, step=1)
-        month = st.slider("Month", min_value=1, max_value=12, value=11)
-        day = st.slider("Day", min_value=1, max_value=31, value=9)
+        year = st.number_input("Fiscal Year", min_value=2020, max_value=2035, value=2022, step=1)
+        month = st.slider("Fiscal Month", min_value=1, max_value=12, value=11)
+        day = st.slider("Fiscal Day", min_value=1, max_value=31, value=9)
 
-    # Structuring user choices into matching DataFrame structure 
+    # Structuring feature arrays matching the upstream pipeline schema
     input_df = pd.DataFrame({
         "Country": [country],
         "City": [city],
@@ -83,28 +80,27 @@ if pipeline:
 
     st.markdown("---")
     
-    # Live preview framework
-    st.write("### 🔍 Input Blueprint (Dataframe View)")
+    # Input Blueprint Dataframe Framework
+    st.write("### Input Vector Profile (DataFrame Preview)")
     st.dataframe(input_df)
 
-    # Executing calculation logic
-    if st.button("🚀 Run Profit Prediction", type="primary"):
-        with st.spinner("Processing framework steps..."):
+    # Model Evaluation Pipeline Execution
+    if st.button("Execute Predictive Optimization Model", type="primary"):
+        with st.spinner("Processing architectural pipeline transformations..."):
             try:
-                # Target the pipeline prediction node directly
+                # Direct prediction calculation
                 prediction = pipeline.predict(input_df)[0]
                 
-                # Visual output presentation
-                st.markdown("### 🎯 Model Prediction Results")
+                st.markdown("---")
+                st.markdown("### Model Optimization Output")
                 metric_col, notes_col = st.columns([1, 2])
                 
                 if prediction >= 0:
-                    metric_col.metric(label="Projected Gross Profit", value=f"${prediction:,.4f}")
-                    notes_col.success("✨ Safe margin! The current settings predict a net positive profit outcome.")
-                    st.balloons()
+                    metric_col.metric(label="Projected Net Margin (Profit)", value=f"${prediction:,.4f}")
+                    notes_col.success("The structured deal matrices generate a favorable, profitable margin. Risk validation cleared.")
                 else:
-                    metric_col.metric(label="Projected Gross Loss", value=f"${prediction:,.4f}", delta_color="inverse")
-                    notes_col.warning("⚠️ Warning! The current pricing variables generate a financial system net-loss.")
+                    metric_col.metric(label="Projected Net Margin (Loss)", value=f"${prediction:,.4f}", delta_color="inverse")
+                    notes_col.warning("The evaluated configuration results in a financial system deficit. Adjust pricing structures, discount parameters, or volume scaling inputs.")
                     
             except Exception as e:
-                st.error(f"Execution handling error: {e}")
+                st.error(f"Runtime Pipeline Exception Encountered: {e}")
