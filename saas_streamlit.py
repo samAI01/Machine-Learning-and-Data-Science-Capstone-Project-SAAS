@@ -22,7 +22,6 @@ st.markdown("---")
 @st.cache_resource
 def load_ml_pipeline():
     try:
-        # Attempts to load your exported pipeline object
         return joblib.load("saas_pipeline.pkl")
     except FileNotFoundError:
         st.error("⚠️ **Model File Error:** `saas_pipeline.pkl` was not found in the root directory. Please place the file in the same folder as this script.")
@@ -31,18 +30,7 @@ def load_ml_pipeline():
 pipeline = load_ml_pipeline()
 
 if pipeline:
-    # Sidebar context panel
-    st.sidebar.header("⚙️ Model Blueprint Meta")
-    st.sidebar.success("✅ Model loaded successfully!")
-    st.sidebar.info("""
-    **Pipeline Flow:**
-    1. Categorical Encoding (`OneHotEncoder`)
-    2. Numerical Scaling (`StandardScaler`)
-    3. Feature Selection (`RFE` w/ LinearRegression)
-    4. Estimation (`DecisionTreeRegressor`)
-    """)
-
-    # Grid breakdown layout for cleaner inputs
+    # Grid breakdown layout for inputs
     st.subheader("🛠️ Transaction Feature Variables")
     col1, col2, col3 = st.columns(3)
 
@@ -120,4 +108,3 @@ if pipeline:
                     
             except Exception as e:
                 st.error(f"Execution handling error: {e}")
-                st.info("Ensure the category strings fall perfectly within your `saas_pipeline.pkl` bounds or that your encoder setup tolerates unknown strings.")
